@@ -12,18 +12,27 @@ class PersonHelper
     public function insert(Person $person_instance)
     {
         //CREATE INSTANCE
-        $firstname = $person_instance->getFirstName();
-        $lastname = $person_instance->getLastName();
-        $username = $person_instance->getUsername();
+        $firstname =trim( $person_instance->getFirstName());
+        $lastname = trim($person_instance->getLastName());
+        $username =trim( $person_instance->getUsername());
         // USE DBconnector CLASS TO GET
         $connection = new \CRUD\Helper\DBConnector();
         //USE CONNECT FUNCTION
         $connection->connect();
         $conn=$connection->getConnection();
-        $sql = "INSERT INTO mycurddb (Fname, lName, uName)
-                VLUES ($firstname,$lastname,$username)";
+
+        $sth=$conn->prepare("INSERT INTO mycuddb (FirstName, LastName, Username)
+                SELECT * FROM (SELECT '$firstname', '$lastname', '$username') AS tmp
+                WHERE NOT EXISTS (
+                        SELECT Username FROM Person WHERE Username = '$username'
+                    ) LIMIT 1");
+
+        $sth->execute();
+        $count = $sth->rowCount();
+//        $sql = "INSERT INTO mycurddb (Fname, lName, uName)
+//                VLUES ($firstname,$lastname,$username)";
         // use exec() because no results are returned
-        $conn->exec($sql);
+//        $conn->exec($sql);
         if($conn->rowCount()){
             $message="<br>  username: ".$username." Created successfully. New Row added to database";
         }else{

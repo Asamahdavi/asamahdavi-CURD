@@ -56,9 +56,9 @@ class PersonController
      */
     public function updateAction($request)
     {
-        $firstName=$_POST["firstName"];
-        $lastName=$_POST["lastName"];
-        $username=$_POST["username"];
+        $firstName=$_POST["FirstName"];
+        $lastName=$_POST["LastName"];
+        $username=$_POST["Username"];
         $person = new Person($firstName,$lastName,$username);
         $personHelper = new PersonHelper();
         $personHelper->update($person);
@@ -88,7 +88,7 @@ class PersonController
      */
     public function deleteAction($request)
     {
-        $username=$_POST["username"];
+        $username=$_POST["Username"];
         $personHelper = new PersonHelper();
         $personHelper->delete($username);
     }

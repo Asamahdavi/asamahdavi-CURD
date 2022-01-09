@@ -8,7 +8,11 @@ $connection = new \CRUD\Helper\DBConnector();
 try {
     $connection->connect();
 } catch (Exception $e) {
+    echo "not found"."<br>" ;
 }
 
 $controller = new PersonController();
-$controller->switcher($_SERVER['REQUEST_URI'],$_REQUEST);
+try {
+    $controller->switcher($_SERVER['REQUEST_URI'], $_REQUEST);
+} catch (Exception $e) {
+}
